@@ -39,7 +39,8 @@
 </template>
 
 <script>
-import { requestLogin } from '../api/api'
+
+import { requestLogin,testcontent } from '../api/api'
 export default {
   data () {
     return {
@@ -69,13 +70,14 @@ export default {
           var loginParams = { aAccount: this.ruleForm2.aAccount, aPassword: this.ruleForm2.aPassword }
           requestLogin(loginParams).then(res => {
             this.logining = false
-            if (res.code !== 600) {
+            console.log(res.data.code)
+            if (res.data.code !== 600) {
               this.$message({
                 message: res.msg,
                 type: 'error'
               })
             } else {
-              sessionStorage.setItem('user', JSON.stringify(res.data.aAccount))
+              sessionStorage.setItem('user', JSON.stringify(res.data.data.aAccount))
               this.$router.push({
                 path: '/roomManage'
               })

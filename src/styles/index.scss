@@ -29,3 +29,10 @@
 @import "material-dashboard/alerts";
 @import "material-dashboard/fixed-plugin";
 @import "material-dashboard/dropdown";
+
+.addroominput .el-input__inner{
+  height: 44px;
+}
+.el-coloumn .cell{
+  text-align: center;
+}
