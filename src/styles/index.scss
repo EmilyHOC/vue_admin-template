@@ -36,3 +36,7 @@
 .el-coloumn .cell{
   text-align: center;
 }
+
+.el-textarea .el-textarea__inner { // 然后找到对应的类名，在这里将拉伸去掉即可
+  resize: none;
+}

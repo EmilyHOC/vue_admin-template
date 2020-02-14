@@ -5,10 +5,12 @@ let base = 'http://39.98.207.235:8080/pine2'
 // eslint-disable-next-line no-unused-vars
 // http://localhost/8082
 let base2 = '/api'
-
+/*
+* 登陆
+* */
 export const requestLogin = params => {
-  return axios.post(`${base}/manage/user/v1/login`, params)
- // return axios.post(`${base2}/api/admin/login`,params)
+  //return axios.post(`${base}/manage/user/v1/login`, params)
+  return axios.post(`${base2}/api/admin/login`,params)
 }
 
 /*
@@ -33,4 +35,28 @@ export const modifyRoom = params => {
 //查找房源
 export const searchRoom = params => {
   return axios.post(`${base2}/api/room/searchRoom`, params)
+}
+
+/*
+* 系统管理
+* */
+//获取所有的管理员
+export const getAllAdmin = params => {
+  return axios.get(`${base2}/api/admin/getAll`,{params: params})
+}
+//删除管理员
+export const deleteAdmin = params =>{
+  return axios.delete(`${base2}/api/admin/deleteAdmin`, {params: params})
+}
+//新增管理员
+export const addNewAdmin = params => {
+    return axios.post(`${base2}/api/admin/addNewAdmin`, params)
+}
+//修改管理员信息
+export const modifyAdmin = params => {
+    return axios.put(`${base2}/api/admin/modifyAdmin`, params)
+}
+//搜索管理员
+export const searchAdminByName = params =>{
+    return axios.post(`${base2}/api/admin/searchAdminByName`, params)
 }

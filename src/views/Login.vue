@@ -7,20 +7,20 @@
       label-position="left"
       label-width="0px"
       class="demo-ruleForm login-container">
-      <h3 class="title">系统登录</h3>
-      <el-form-item prop="aAccount">
+      <h3 class="title">智能公寓系统登录</h3>
+      <el-form-item prop="admin_name">
         <el-input
-          v-model="ruleForm2.aAccount"
+          v-model="ruleForm2.admin_name"
           type="text"
           auto-complete="off"
           placeholder="用户名"/>
       </el-form-item>
-      <el-form-item prop="aPassword">
+      <el-form-item prop="admin_password">
         <el-input
-          v-model="ruleForm2.aPassword"
+          v-model="ruleForm2.admin_password"
           type="password"
           auto-complete="off"
-          placeholder="密码"/>
+          placeholder="密码" show-password/>
       </el-form-item>
       <el-checkbox
         v-model="checked"
@@ -31,7 +31,7 @@
           :loading="logining"
           type="primary"
           style="width:100%;"
-          @click.native.prevent=" handleSubmit2">登录</el-button>
+          @click.native.prevent="handleLogin">登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -40,53 +40,96 @@
 
 <script>
 
-import { requestLogin,testcontent } from '../api/api'
+import { requestLogin } from '../api/api'
 export default {
   data () {
     return {
       logining: false,
       ruleForm2: {
-        aAccount: '123456',
-        aPassword: '123456'
+        admin_name: '',
+        admin_password: ''
       },
       rules2: {
-        aAccount: [
+        admin_name: [
           { required: true, message: '请输入账号', trigger: 'blur' }
         ],
-        aPassword: [
+        admin_password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
         ]
       },
-      checked: true
+      checked: false
     }
   },
+  mounted(){
+    this.getCookie()
+  },
   methods: {
-
-    handleSubmit2 (ev) {
-      var _this = this
+    //登录
+    handleLogin () {
       this.$refs.ruleForm2.validate((valid) => {
         if (valid) {
           this.logining = true
-          var loginParams = { aAccount: this.ruleForm2.aAccount, aPassword: this.ruleForm2.aPassword }
+          //记住密码
+          if(this.checked ===true){
+            //传入账号密码和保存参数
+            this.setCookie(this.ruleForm2.admin_name,this.ruleForm2.admin_password,7)
+          }else {
+            this.clearCookie()
+          }
+          var loginParams = {
+            admin_name: this.ruleForm2.admin_name,
+            admin_password: this.ruleForm2.admin_password
+          }
           requestLogin(loginParams).then(res => {
             this.logining = false
-            console.log(res.data.code)
-            if (res.data.code !== 600) {
+            if (res.data.code !== 0) {
               this.$message({
-                message: res.msg,
+                message: res.data.message,
                 type: 'error'
               })
             } else {
-              sessionStorage.setItem('user', JSON.stringify(res.data.data.aAccount))
+              sessionStorage.setItem('user', JSON.stringify(res.data.data.admin_name))
+              sessionStorage.setItem('user_kind', JSON.stringify(res.data.data.admin_kind))
               this.$router.push({
                 path: '/roomManage'
               })
+              window.document.cookie = "login" + "=" +new Date().getTime() + ";path=/;expires=" + 'Fri, 31 Dec 9999 23:59:59 GMT'
             }
           })
         } else {
           return false
         }
       })
+    },
+    //读取Cookie
+    getCookie(){
+      if(document.cookie.length > 0 ){
+        console.log(document.cookie)
+        var arr = document.cookie.split('; ')
+        //cookie是这样一串： userName = root; userPwd=root
+        for(var i = 0;i<arr.length;i++){
+          console.log(arr[i])
+          var arr2 = arr[i].split('='); //再次切割
+          //判断查找相对应的值
+          if (arr2[0] == 'userName') {
+            this.ruleForm2.admin_name = arr2[1]; //保存到保存数据的地方
+          } else if (arr2[0] == 'userPwd') {
+            this.ruleForm2.admin_password = arr2[1];
+          }
+        }
+      }
+    },
+    //设置Cookie
+    setCookie(c_name, c_pwd, exdays){
+      var exdate = new Date(); //获取时间
+      exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
+      //字符串拼接cookie
+      window.document.cookie = "userName" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
+      window.document.cookie = "userPwd" + "=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
+    },
+    //清空cookie
+    clearCookie(){
+      this.setCookie("","", -1)
     }
   }
 }
@@ -95,7 +138,6 @@ export default {
 
 <style lang="scss" scoped>
     .login-container {
-        /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
         -webkit-border-radius: 5px;
         border-radius: 5px;
         -moz-border-radius: 5px;

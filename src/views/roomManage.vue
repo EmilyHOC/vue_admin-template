@@ -24,7 +24,7 @@
                         <v-card-text>
                             <el-table :data="roomData" class="el-coloumn">
                                 <el-table-column
-                                        label="房源id"
+                                        label="房源号"
                                         prop="roomid"
                                         width="120"
                                         style="text-align: center"/>
@@ -80,17 +80,21 @@
                 </v-flex>
             </v-layout>
         </v-container>
-        <!--编辑界面-->
-        <el-dialog title="新增房源" :visible.sync="showaddRoomDialog" class="showaddRoomDialog" @close="showaddRoomDialog=false">
+        <!--新增界面-->
+        <el-dialog title="新增房源" :visible.sync="showaddRoomDialog" class="showaddRoomDialog" @close="showaddRoomDialog=false" width="40%">
             <el-form :model="roomEditForm" label-width="80px" :rules="roomEditFormRules" ref="ruleForm">
                 <el-form-item label="地址" prop="room_address">
                     <el-input v-model="roomEditForm.room_address" :clearable="true" max="170"></el-input>
                 </el-form-item>
                 <el-form-item label="使用年限" prop="room_usage">
-                    <el-input v-model="roomEditForm.room_usage" :clearable="true"></el-input>
+                    <el-input v-model="roomEditForm.room_usage" :clearable="true">
+                        <template slot="append">年</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="面积" prop="room_area">
-                    <el-input v-model="roomEditForm.room_area" :clearable="true"></el-input>
+                    <el-input v-model="roomEditForm.room_area" :clearable="true">
+                        <template slot="append">平方米</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="出租与否" prop="room_rend">
                     <el-radio-group v-model="roomEditForm.room_rend">
@@ -108,14 +112,18 @@
             </div>
 
         </el-dialog>
-        <!--修改界面界面-->
-        <el-dialog title="修改房源" :visible.sync="showModifyRoomDialog" class="showModifyRoomDialog" @close="showModifyRoomDialog=false">
+        <!--修改界面-->
+        <el-dialog title="修改房源" :visible.sync="showModifyRoomDialog" class="showModifyRoomDialog" @close="showModifyRoomDialog=false" width="40%">
             <el-form :model="roomModifyForm" label-width="80px" :rules="roomModifyFormRules" ref="modifyruleForm">
                 <el-form-item label="使用年限" prop="room_usage">
-                    <el-input v-model="roomModifyForm.room_usage" :clearable="true"></el-input>
+                    <el-input v-model="roomModifyForm.room_usage" :clearable="true">
+                        <template slot="append">年</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="面积" prop="room_area">
-                    <el-input v-model="roomModifyForm.room_area" :clearable="true"></el-input>
+                    <el-input v-model="roomModifyForm.room_area" :clearable="true">
+                        <template slot="append">平方米</template>
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="出租与否" prop="room_rend">
                     <el-radio-group v-model="roomModifyForm.room_rend">
@@ -124,7 +132,7 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="备注">
-                    <el-input type="textarea" placeholder="请输入备注" v-model="roomModifyForm.remarks"></el-input>
+                    <el-input type="textarea" placeholder="请输入备注" v-model="roomModifyForm.remarks" style="resize: none; "></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -270,18 +278,17 @@ export default {
           let params = {
               key: this.searchroom.replace(/(^\s*)|(\s*$)/g, "")
           }
-          if(this.searchroom){
-              searchRoom(params).then(res=> {
-                  if(res.data){
-                      console.log(res.data.data)
-                      this.roomData = res.data.data
-                  }
-              })
-          }
+          searchRoom(params).then(res=> {
+              if(res.data){
+                  console.log(res.data.data)
+                  this.roomData = res.data.data
+              }
+          })
       }
   }
 }
 </script>
 <style>
+
 
 </style>
