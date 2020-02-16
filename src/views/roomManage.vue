@@ -65,9 +65,10 @@
                                 <el-table-column
                                         label="备注"
                                         prop="remarks"
-                                        width="180"/>
+                                        min-width="200"/>
                                 <el-table-column
                                         label="修改信息"
+                                        min-width="180"
                                        >
                                     <template slot-scope="scope">
                                         <el-button type="warning" size="small" @click="modifyRoom(scope.row)">修改</el-button>

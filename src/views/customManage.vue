@@ -12,23 +12,23 @@
           <el-table :data="testdata">
             <el-table-column
               label="序号"
-              prop="id"
+              prop="customId"
               width="120"
             />
             <el-table-column
               label="姓名"
-              prop="name"
+              prop="custom_name"
               width="170"/>
             <el-table-column
               label="性别"
-              prop="idcard"
+              prop="custom_sex"
               width="140"/>
             <el-table-column
               label="年龄"
-              prop="worktime"
+              prop="custom_age"
               width="140"/>
             <el-table-column
-              prop="picture"
+              prop="custom_phone"
               label="手机号">
               <template slot-scope="scope">
                 <el-button
@@ -39,19 +39,19 @@
             </el-table-column>
             <el-table-column
               label="工作地点"
-              prop="lastlogin"
+              prop="custom_workAddress"
               width="180"/>
             <el-table-column
               label="职业"
-              prop="lastlogin"
+              prop="custom_occupation"
               width="180"/>
             <el-table-column
               label="租房信息"
-              prop="lastlogin"
+              prop="custom_rendInfo"
               width="180"/>
             <el-table-column
               label="租房需求"
-              prop="lastlogin"
+              prop="custom_rendNeed"
               width="180"/>
             <el-table-column
               label="是否签订租房合同"
@@ -59,7 +59,7 @@
               width="180"/>
             <el-table-column
               label="介绍人"
-              prop="lastlogin"
+              prop="custom_introducer"
               width="180"/>
             <el-table-column
               label="操作"
