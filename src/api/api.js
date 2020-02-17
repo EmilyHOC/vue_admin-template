@@ -71,7 +71,15 @@ export const getAllCustom = params => {
 export const deleteCustom = params => {
     return axios.delete(`${base2}/api/custom/deleteCustom`, {params: params})
 }
-//搜索用户
+//搜索客户
 export const searchCustom =  params => {
     return axios.post(`${base2}/api/custom/searchCustomByName`, params)
+}
+//新增客户
+export const newCustom = params => {
+    return axios.post(`${base2}/api/custom/newCustom`, params)
+}
+//修改客户信息
+export const modifyCustom = params => {
+    return axios.put(`${base2}/api/custom/modifyCustom`, params)
 }

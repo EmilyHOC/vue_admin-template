@@ -271,6 +271,10 @@
                 }
                 addNewAdmin(params).then(res=> {
                     if(res.data.code === 0){
+                        this.$message({
+                            message: '新增成功',
+                            type: 'success'
+                        })
                         this.showaddadminDialog = false
                         this.adminEditForm = {}
                         this.getAllUser()
@@ -299,6 +303,10 @@
                 }
                 modifyAdmin(params).then(res => {
                     if(res.data.code === 0){
+                        this.$message({
+                            message: '修改成功',
+                            type: 'success'
+                        })
                         this.showModifyAdminDialog = false
                         this.getAllUser()
                     }
