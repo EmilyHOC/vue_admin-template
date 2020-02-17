@@ -1,307 +1,156 @@
 <template>
-  <v-container
-    fill-height
-    fluid
-    style="flex-wrap: wrap;"
-  >
-    <v-flex xs12>
-      <material-card
-        color="white"
-      >
-        <v-card-text>
-          <el-table :data="testdata">
-            <el-table-column
-              label="序号"
-              prop="customId"
-              width="120"
-            />
-            <el-table-column
-              label="姓名"
-              prop="custom_name"
-              width="170"/>
-            <el-table-column
-              label="性别"
-              prop="custom_sex"
-              width="140"/>
-            <el-table-column
-              label="年龄"
-              prop="custom_age"
-              width="140"/>
-            <el-table-column
-              prop="custom_phone"
-              label="手机号">
-              <template slot-scope="scope">
-                <el-button
-                  type="primary"
-                  size="small"
-                  @click="toImg(scope.row)">查看</el-button>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="工作地点"
-              prop="custom_workAddress"
-              width="180"/>
-            <el-table-column
-              label="职业"
-              prop="custom_occupation"
-              width="180"/>
-            <el-table-column
-              label="租房信息"
-              prop="custom_rendInfo"
-              width="180"/>
-            <el-table-column
-              label="租房需求"
-              prop="custom_rendNeed"
-              width="180"/>
-            <el-table-column
-              label="是否签订租房合同"
-              prop="lastlogin"
-              width="180"/>
-            <el-table-column
-              label="介绍人"
-              prop="custom_introducer"
-              width="180"/>
-            <el-table-column
-              label="操作"
-              min-width="180">
-              <template slot-scope="scope">
-                <el-button
-                  v-if="scope.row.reviewstatus === '0'"
-                  size="small"
-                  type="primary"
-                  @click="reviewTrend(scope.row, 2)">不通过</el-button>
-                <el-button
-                  v-if="scope.row.reviewstatus === '0'"
-                  size="small"
-                  type="primary"
-                  class="btn"
-                  @click="reviewTrend(scope.row, 1)">通过</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </v-card-text>
-      </material-card>
-    </v-flex>
-  </v-container>
+    <v-container
+            fill-height
+            fluid
+            style="flex-wrap: wrap;"
+    >
+        <v-layout wrap>
+            <v-flex xs1>
+                <el-button type="primary" size="small" style="height: 44px;" @click="addNewCustom">
+                    &nbsp;<i class="el-icon-plus"></i>
+                    <span>新增客户</span>
+                </el-button>
+            </v-flex>
+            <v-flex xs3>
+                <el-input class="addroominput" :clearable="true" placeholder="请输入客户姓名姓名" v-model="sarchCustomVal">
+                    <i slot="suffix" class="el-input__icon el-icon-search" @click="searchCustom"></i>
+                </el-input>
+            </v-flex>
+            <v-flex xs12>
+                <material-card
+                        color="white"
+                >
+                    <v-card-text>
+                        <el-table :data="customData">
+                            <el-table-column
+                                    label="序号"
+                                    prop="customId"
+                                    width="120"
+                            />
+                            <el-table-column
+                                    label="姓名"
+                                    prop="custom_name"
+                                    width="170"/>
+                            <el-table-column
+                                    label="性别"
+                                    prop="custom_sex"
+                                    width="140"/>
+                            <el-table-column
+                                    label="年龄"
+                                    prop="custom_age"
+                                    width="140"/>
+                            <el-table-column
+                                    prop="custom_phone"
+                                    label="手机号">
+                            </el-table-column>
+                            <el-table-column
+                                    label="职业"
+                                    prop="custom_occupation"
+                                    width="180"/>
+                            <el-table-column
+                                    label="租房信息"
+                                    prop="custom_rendInfo"
+                                    width="180"/>
+                            <el-table-column
+                                    label="租房需求"
+                                    prop="custom_rendNeed"
+                                    width="180"/>
+                            <el-table-column
+                                    label="是否签订租房合同"
+                                    prop="custom_sign"
+                                    width="180"/>
+                            <el-table-column
+                                    label="介绍人"
+                                    prop="custom_introducer"
+                                    width="180"/>
+                            <el-table-column
+                                    label="操作"
+                                    min-width="180">
+                                <template slot-scope="scope">
+                                    <el-button @click="handleModifyCustom">修改</el-button>
+                                    <el-button @click="handleDeleteCustom(scope.row.customId)">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </v-card-text>
+                </material-card>
+            </v-flex>
+        </v-layout>
+
+    </v-container>
 </template>
 
 <script>
-export default {
-  data: () => ({
-    icons: [
-      'mdi-access-point',
-      'mdi-access-point-network',
-      'mdi-account',
-      'mdi-account-alert',
-      'mdi-account-box',
-      'mdi-account-box-multiple',
-      'mdi-account-box-outline',
-      'mdi-account-card-details',
-      'mdi-account-check',
-      'mdi-account-circle',
-      'mdi-account-convert',
-      'mdi-account-edit',
-      'mdi-account-group',
-      'mdi-account-heart',
-      'mdi-account-key',
-      'mdi-account-location',
-      'mdi-account-minus',
-      'mdi-account-multiple',
-      'mdi-account-multiple-check',
-      'mdi-account-multiple-minus',
-      'mdi-account-multiple-outline',
-      'mdi-account-multiple-plus',
-      'mdi-account-multiple-plus-outline',
-      'mdi-account-network',
-      'mdi-account-off',
-      'mdi-account-outline',
-      'mdi-account-plus',
-      'mdi-account-plus-outline',
-      'mdi-account-remove',
-      'mdi-account-search',
-      'mdi-account-search-outline',
-      'mdi-account-settings',
-      'mdi-account-settings-variant',
-      'mdi-account-star',
-      'mdi-account-switch',
-      'mdi-accusoft',
-      'mdi-adjust',
-      'mdi-adobe',
-      'mdi-air-conditioner',
-      'mdi-airballoon',
-      'mdi-airplane',
-      'mdi-airplane-landing',
-      'mdi-airplane-off',
-      'mdi-airplane-takeoff',
-      'mdi-airplay',
-      'mdi-airport',
-      'mdi-alarm',
-      'mdi-alarm-bell',
-      'mdi-alarm-check',
-      'mdi-alarm-light',
-      'mdi-alarm-multiple',
-      'mdi-alarm-off',
-      'mdi-alarm-plus',
-      'mdi-alarm-snooze',
-      'mdi-album',
-      'mdi-alert',
-      'mdi-alert-box',
-      'mdi-alert-circle',
-      'mdi-alert-circle-outline',
-      'mdi-alert-decagram',
-      'mdi-alert-octagon',
-      'mdi-alert-octagram',
-      'mdi-alert-outline',
-      'mdi-alien',
-      'mdi-all-inclusive',
-      'mdi-alpha',
-      'mdi-alphabetical',
-      'mdi-altimeter',
-      'mdi-amazon',
-      'mdi-amazon-alexa',
-      'mdi-amazon-drive',
-      'mdi-ambulance',
-      'mdi-amplifier',
-      'mdi-anchor',
-      'mdi-android',
-      'mdi-android-debug-bridge',
-      'mdi-android-head',
-      'mdi-android-studio',
-      'mdi-angle-acute',
-      'mdi-angle-obtuse',
-      'mdi-angle-right',
-      'mdi-angular',
-      'mdi-angularjs',
-      'mdi-animation',
-      'mdi-animation-play',
-      'mdi-anvil',
-      'mdi-apple',
-      'mdi-apple-finder',
-      'mdi-apple-icloud',
-      'mdi-apple-ios',
-      'mdi-apple-keyboard-caps',
-      'mdi-apple-keyboard-command',
-      'mdi-apple-keyboard-control',
-      'mdi-apple-keyboard-option',
-      'mdi-apple-keyboard-shift',
-      'mdi-apple-safari',
-      'mdi-application',
-      'mdi-approval',
-      'mdi-apps',
-      'mdi-arch',
-      'mdi-archive',
-      'mdi-arrange-bring-forward',
-      'mdi-arrange-bring-to-front',
-      'mdi-arrange-send-backward',
-      'mdi-arrange-send-to-back',
-      'mdi-arrow-all',
-      'mdi-arrow-bottom-left',
-      'mdi-arrow-bottom-left-bold-outline',
-      'mdi-arrow-bottom-left-thick',
-      'mdi-arrow-bottom-right',
-      'mdi-arrow-bottom-right-bold-outline',
-      'mdi-arrow-bottom-right-thick',
-      'mdi-arrow-collapse',
-      'mdi-arrow-collapse-all',
-      'mdi-arrow-collapse-down',
-      'mdi-arrow-collapse-horizontal',
-      'mdi-arrow-collapse-left',
-      'mdi-arrow-collapse-right',
-      'mdi-arrow-collapse-up',
-      'mdi-arrow-collapse-vertical',
-      'mdi-arrow-decision',
-      'mdi-arrow-decision-auto',
-      'mdi-arrow-decision-auto-outline',
-      'mdi-arrow-decision-outline',
-      'mdi-arrow-down',
-      'mdi-arrow-down-bold',
-      'mdi-arrow-down-bold-box',
-      'mdi-arrow-down-bold-box-outline',
-      'mdi-arrow-down-bold-circle',
-      'mdi-arrow-down-bold-circle-outline',
-      'mdi-arrow-down-bold-hexagon-outline',
-      'mdi-arrow-down-bold-outline',
-      'mdi-arrow-down-box',
-      'mdi-arrow-down-drop-circle',
-      'mdi-arrow-down-drop-circle-outline',
-      'mdi-arrow-down-thick',
-      'mdi-arrow-expand',
-      'mdi-arrow-expand-all',
-      'mdi-arrow-expand-down',
-      'mdi-arrow-expand-horizontal',
-      'mdi-arrow-expand-left',
-      'mdi-arrow-expand-right',
-      'mdi-arrow-expand-up',
-      'mdi-arrow-expand-vertical',
-      'mdi-arrow-left',
-      'mdi-arrow-left-bold',
-      'mdi-arrow-left-bold-box',
-      'mdi-arrow-left-bold-box-outline',
-      'mdi-arrow-left-bold-circle',
-      'mdi-arrow-left-bold-circle-outline',
-      'mdi-arrow-left-bold-hexagon-outline',
-      'mdi-arrow-left-bold-outline',
-      'mdi-arrow-left-box',
-      'mdi-arrow-left-drop-circle',
-      'mdi-arrow-left-drop-circle-outline',
-      'mdi-arrow-left-right-bold-outline',
-      'mdi-arrow-left-thick',
-      'mdi-arrow-right',
-      'mdi-arrow-right-bold',
-      'mdi-arrow-right-bold-box',
-      'mdi-arrow-right-bold-box-outline',
-      'mdi-arrow-right-bold-circle',
-      'mdi-arrow-right-bold-circle-outline',
-      'mdi-arrow-right-bold-hexagon-outline',
-      'mdi-arrow-right-bold-outline',
-      'mdi-arrow-right-box',
-      'mdi-arrow-right-drop-circle',
-      'mdi-arrow-right-drop-circle-outline',
-      'mdi-arrow-right-thick',
-      'mdi-arrow-split-horizontal',
-      'mdi-arrow-split-vertical',
-      'mdi-arrow-top-left',
-      'mdi-arrow-top-left-bold-outline',
-      'mdi-arrow-top-left-thick',
-      'mdi-arrow-top-right',
-      'mdi-arrow-top-right-bold-outline',
-      'mdi-arrow-top-right-thick',
-      'mdi-arrow-up',
-      'mdi-arrow-up-bold',
-      'mdi-arrow-up-bold-box',
-      'mdi-arrow-up-bold-box-outline',
-      'mdi-arrow-up-bold-circle',
-      'mdi-arrow-up-bold-circle-outline',
-      'mdi-arrow-up-bold-hexagon-outline',
-      'mdi-arrow-up-bold-outline',
-      'mdi-arrow-up-box',
-      'mdi-arrow-up-down-bold-outline',
-      'mdi-arrow-up-drop-circle',
-      'mdi-arrow-up-drop-circle-outline',
-      'mdi-arrow-up-thick',
-      'mdi-artist',
-      'mdi-assistant',
-      'mdi-asterisk',
-      'mdi-at',
-      'mdi-atlassian',
-      'mdi-atom',
-      'mdi-attachment',
-      'mdi-audio-video',
-      'mdi-audiobook',
-      'mdi-augmented-reality',
-      'mdi-auto-fix',
-      'mdi-auto-upload',
-      'mdi-autorenew',
-      'mdi-av-timer',
-      'mdi-axe',
-      'mdi-azure',
-      'mdi-baby',
-      'mdi-baby-buggy',
-      'mdi-backburger',
-      'mdi-backspace',
-      'mdi-backup-restore',
-      'mdi-badminton'
-    ]
-  })
-}
+  import {getAllCustom, deleteCustom, searchCustom, searchRoom} from '../api/api'
+
+    export default {
+
+        data() {
+            return {
+                customData: [], //所有客户信息
+                sarchCustomVal: '', //搜索客户名字
+                modifyCustomDialog: false, //修改客户弹窗
+                newCustomDialog: false, //新增客户弹窗
+            }
+        },
+        created() {
+            this.getAllCustom()
+        },
+        methods: {
+            //获取所有顾客列表
+            getAllCustom() {
+                getAllCustom().then(res => {
+                    if (res.data.code === 0) {
+                        this.customData = res.data.data
+                    }
+                })
+            },
+            //删除客户信息
+            handleDeleteCustom(customId) {
+                this.$confirm('此操作将永久删除此客户信息, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                });
+                let param = {
+                    customId: customId
+                }
+                deleteCustom(param).then(res => {
+                    if (res.data.code === 0) {
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.getAllCustom()
+                    }
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                })
+            },
+            //搜索客户
+            searchCustom() {
+              let params = {
+                key: this.searchroom.replace(/(^\s*)|(\s*$)/g, "")
+              }
+              searchCustom(params).then(res=> {
+                if(res.data.code === 0){
+                  this.customData = res.data.data
+                }
+              })
+            },
+            //新增客户弹窗
+            addNewCustom() {
+              this.newCustomDialog = !this.newCustomDialog
+            },
+            //修改客户弹窗
+            handleModifyCustom(){
+               this.modifyCustomDialog = !this.modifyCustomDialog
+            }
+        }
+
+    }
 </script>

@@ -60,3 +60,18 @@ export const modifyAdmin = params => {
 export const searchAdminByName = params =>{
     return axios.post(`${base2}/api/admin/searchAdminByName`, params)
 }
+/*
+* 客户管理
+* */
+//获取所有的客户
+export const getAllCustom = params => {
+    return axios.get(`${base2}/api/custom/getAllCustom`, {params:params})
+}
+//删除客户
+export const deleteCustom = params => {
+    return axios.delete(`${base2}/api/custom/deleteCustom`, {params: params})
+}
+//搜索用户
+export const searchCustom =  params => {
+    return axios.post(`${base2}/api/custom/searchCustomByName`, params)
+}
