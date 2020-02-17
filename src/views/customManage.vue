@@ -3,7 +3,7 @@
         <v-container
                 fill-height
                 fluid
-                style="flex-wrap: wrap;"
+                grid-list-xl
         >
             <v-layout wrap>
                 <v-flex xs1>
@@ -22,27 +22,27 @@
                             color="white"
                     >
                         <v-card-text>
-                            <el-table :data="customData">
+                            <el-table :data="customData" class="el-coloumn">
                                 <el-table-column
                                         label="序号"
                                         prop="customId"
-                                        width="120"
+                                        width="100"
                                 />
                                 <el-table-column
                                         label="姓名"
                                         prop="custom_name"
-                                        width="140"/>
+                                        width="120"/>
                                 <el-table-column
                                         label="性别"
                                         prop="custom_sex"
-                                        width="140"/>
+                                        width="100"/>
                                 <el-table-column
                                         label="年龄"
                                         prop="custom_age"
-                                        width="140"/>
+                                        width="100"/>
                                 <el-table-column
                                         prop="custom_phone"
-                                        label="手机号" width="180">
+                                        label="手机号" width="160">
                                 </el-table-column>
                                 <el-table-column
                                         label="职业"
@@ -51,15 +51,15 @@
                                 <el-table-column
                                         label="租房信息"
                                         prop="custom_rendInfo"
-                                        width="180"/>
+                                        width="160"/>
                                 <el-table-column
                                         label="租房需求"
                                         prop="custom_rendNeed"
-                                        width="180"/>
+                                        width="160"/>
                                 <el-table-column
-                                        label="是否签订租房合同"
+                                        label="是否签订合同"
                                         prop="custom_sign"
-                                        width="180">
+                                        width="130">
                                     <template slot-scope="scope">
                                         <a v-if="scope.row.custom_sign === true">是</a>
                                         <a v-else>否</a>
@@ -85,7 +85,8 @@
 
         </v-container>
         <!--新增界面-->
-        <el-dialog title="新增客户" :visible.sync="newCustomDialog" class="newCustomDialog" @close="newCustomDialog=false" width="40%">
+        <el-dialog title="新增客户" :visible.sync="newCustomDialog" class="newCustomDialog" @close="newCustomDialog=false"
+                   width="40%">
             <el-form :model="customEditForm" label-width="80px" :rules="customEditFormRules" ref="customruleForm">
                 <el-form-item label="姓名" prop="custom_name">
                     <el-input v-model="customEditForm.custom_name" :clearable="true" max="170"></el-input>
@@ -98,7 +99,7 @@
                 <el-form-item label="性别" prop="custom_sex">
                     <el-radio-group v-model="customEditForm.custom_sex">
                         <el-radio class="radio" label="男">男</el-radio>
-                        <el-radio class="radio" label=女">女</el-radio>
+                        <el-radio class="radio" label="女">女</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="手机号" prop="custom_phone">
@@ -113,7 +114,7 @@
                 <el-form-item label="租房信息" prop="custom_rendInfo">
                     <el-input v-model="customEditForm.custom_rendInfo" :clearable="true" max="170"></el-input>
                 </el-form-item>
-                <el-form-item label="是否签订租房需求" prop="custom_sign">
+                <el-form-item label="签订合同" prop="custom_sign">
                     <el-radio-group v-model="customEditForm.custom_sign">
                         <el-radio class="radio" label="true">是</el-radio>
                         <el-radio class="radio" label="false">否</el-radio>
@@ -122,13 +123,17 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="resestCustom('customruleForm')">取消</el-button>
-                <el-button type="primary" @click.native="submitCustom('customruleForm')" :loading="submitCustomSuccess">提交</el-button>
+                <el-button type="primary" @click.native="submitCustom('customruleForm')" :loading="submitCustomSuccess">
+                    提交
+                </el-button>
             </div>
 
         </el-dialog>
         <!--修改界面-->
-        <el-dialog title="修改客户信息" :visible.sync="modifyCustomDialog" class="modifyCustomDialog" @close="modifyCustomDialog=false" width="40%">
-            <el-form :model="customModifyForm" label-width="80px" :rules="customModifyFormRules" ref="custommodifyruleForm">
+        <el-dialog title="修改客户信息" :visible.sync="modifyCustomDialog" class="modifyCustomDialog"
+                   @close="modifyCustomDialog=false" width="40%">
+            <el-form :model="customModifyForm" label-width="80px" :rules="customModifyFormRules"
+                     ref="custommodifyruleForm">
                 <el-form-item label="手机号" prop="custom_phone">
                     <el-input v-model="customEditForm.custom_phone" :clearable="true" max="170"></el-input>
                 </el-form-item>
@@ -144,7 +149,9 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="modifyResetCustom('custommodifyruleForm')">取消</el-button>
-                <el-button type="primary" @click.native="modifysubmitRoom('custommodifyruleForm')" :loading="submitModifyCustomSuccess">提交</el-button>
+                <el-button type="primary" @click.native="modifysubmitRoom('custommodifyruleForm')"
+                           :loading="submitModifyCustomSuccess">提交
+                </el-button>
             </div>
         </el-dialog>
     </div>
@@ -184,23 +191,21 @@
                 },
                 submitCustomSuccess: false,
                 customEditFormRules: {
-                    custom_name:[{ required: true, message: '请输入姓名', trigger: 'blur' }],
-                    custom_age: [{ required: true, validator: valiNumberPass2, trigger: 'blur' }],
-                    custom_sex: [{ required: true, message: '请选择客户性别', trigger: 'blur' }],
-                    custom_phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
-                    custom_sign: [{ required: true, message: '请选择客户是否签订租房合同', trigger: 'blur' }],
+                    custom_name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
+                    custom_age: [{required: true, validator: valiNumberPass2, trigger: 'blur'}],
+                    custom_sex: [{required: true, message: '请选择客户性别', trigger: 'blur'}],
+                    custom_phone: [{required: true, message: '请输入手机号', trigger: 'blur'}],
+                    custom_sign: [{required: true, message: '请选择客户是否签订租房合同', trigger: 'blur'}],
                 },
                 //修改客户信息
-                customModifyForm:{
+                customModifyForm: {
                     custom_phone: '',
                     custom_rendInfo: '',
                     custom_sign: ''
 
                 },
-                submitModifyCustomSuccess:false,
-                customModifyFormRules: {
-
-                }
+                submitModifyCustomSuccess: false,
+                customModifyFormRules: {}
             }
         },
         created() {
@@ -222,18 +227,18 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                });
-                let param = {
-                    customId: customId
-                }
-                deleteCustom(param).then(res => {
-                    if (res.data.code === 0) {
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-                        this.getAllCustom()
+                    let param = {
+                        customId: customId
                     }
+                    deleteCustom(param).then(res => {
+                        if (res.data.code === 0) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            this.getAllCustom()
+                        }
+                    })
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -243,37 +248,37 @@
             },
             //搜索客户
             searchCustom() {
-              let params = {
-                key: this.searchroom.replace(/(^\s*)|(\s*$)/g, "")
-              }
-              searchCustom(params).then(res=> {
-                if(res.data.code === 0){
-                  this.customData = res.data.data
+                let params = {
+                    key: this.sarchCustomVal.replace(/(^\s*)|(\s*$)/g, "")
                 }
-              })
+                searchCustom(params).then(res => {
+                    if (res.data.code === 0) {
+                        this.customData = res.data.data
+                    }
+                })
             },
             //新增客户弹窗
             addNewCustom() {
-              this.newCustomDialog = !this.newCustomDialog
+                this.newCustomDialog = !this.newCustomDialog
             },
             //修改客户弹窗
-            handleModifyCustom(){
-               this.modifyCustomDialog = !this.modifyCustomDialog
+            handleModifyCustom() {
+                this.modifyCustomDialog = !this.modifyCustomDialog
             },
             //取消新增客户
-            resestCustom(formName){
+            resestCustom(formName) {
                 this.newCustomDialog = false
                 this.$refs[formName].resetFields();
             },
             //提交新增
-            submitCustom(formName){
+            submitCustom(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let params = {
                             newCustom: this.customEditForm
                         }
                         newCustom(params).then(res => {
-                            if(res.data.code === 0){
+                            if (res.data.code === 0) {
                                 this.$message({
                                     message: '新增客户成功',
                                     type: 'success'
@@ -288,17 +293,17 @@
                 });
             },
             //取消修改客户信息
-            modifyResetCustom(formName){
+            modifyResetCustom(formName) {
                 this.modifyCustomDialog = false
                 this.$refs[formName].resetFields();
             },
             //修改客户信息
-            modifysubmitRoom(){
+            modifysubmitRoom() {
                 let params = {
                     modifyInfo: this.customModifyForm
                 }
                 modifyCustom(params).then(res => {
-                    if(res.data.code === 0){
+                    if (res.data.code === 0) {
                         this.modifyCustomDialog = false
                         this.$message({
                             message: '修改成功',
