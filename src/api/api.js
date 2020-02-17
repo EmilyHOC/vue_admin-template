@@ -83,3 +83,11 @@ export const newCustom = params => {
 export const modifyCustom = params => {
     return axios.put(`${base2}/api/custom/modifyCustom`, params)
 }
+
+/*
+* 租赁管理
+* */
+//所有租赁信息
+export const getAllRend = params =>{
+    return axios.get(`${base2}/api/rend/getAllRend`, {params:params})
+}

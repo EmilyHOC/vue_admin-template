@@ -12,82 +12,53 @@
           color="white"
         >
           <v-card-text>
-            <el-table :data="testdata">
+            <el-table :data="financialData">
               <el-table-column
                 label="房屋编号"
-                prop="id"
+                prop="financial_roomId"
                 width="120"
                 style="text-align: center"/>
               <el-table-column
                 label="地址"
-                prop="name"
+                prop="financial_address"
                 width="170"/>
               <el-table-column
                 label="出租时间"
-                prop="idcard"
+                prop="financial_rendtime"
                 width="140"/>
               <el-table-column
-                label="价格"
-                prop="worktime"
+                label="总价"
+                prop="financial_price"
                 width="140"/>
               <el-table-column
-                prop="picture"
+                prop="financial_premoney"
                 label="押金">
-                <template slot-scope="scope">
-                  <el-button
-                    type="primary"
-                    size="small"
-                    @click="toImg(scope.row)">查看</el-button>
-                </template>
               </el-table-column>
               <el-table-column
                 label="水费单价"
-                prop="lastlogin"
+                prop="findancial_waterprice"
                 width="180"/>
               <el-table-column
                 label="水表初始度数"
-                prop="lastlogin"
+                prop="findancial_watermeter"
                 width="180"/>
               <el-table-column
                 label="电费单价"
-                min-width="180">
-                <template slot-scope="scope">
-                  <el-button
-                    v-if="scope.row.reviewstatus === '0'"
-                    size="small"
-                    type="primary"
-                    @click="reviewTrend(scope.row, 2)">不通过</el-button>
-                  <el-button
-                    v-if="scope.row.reviewstatus === '0'"
-                    size="small"
-                    type="primary"
-                    class="btn"
-                    @click="reviewTrend(scope.row, 1)">通过</el-button>
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="电费初始度数"
-                prop="lastlogin"
-                width="180"/>
+                min-width="180"
+                prop="findancial_powerprice"/>
               <el-table-column
                 label="付款方式"
-                prop="lastlogin"
+                prop="findancial_pay"
                 width="180"/>
               <el-table-column
                 label="操作"
                 min-width="180">
                 <template slot-scope="scope">
                   <el-button
-                    v-if="scope.row.reviewstatus === '0'"
                     size="small"
                     type="primary"
-                    @click="reviewTrend(scope.row, 2)">不通过</el-button>
-                  <el-button
-                    v-if="scope.row.reviewstatus === '0'"
-                    size="small"
-                    type="primary"
-                    class="btn"
-                    @click="reviewTrend(scope.row, 1)">通过</el-button>
+                    @click="eviction(scope.row, 2)">
+                    退租</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -99,31 +70,23 @@
 </template>
 
 <script>
-const leader = 'I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at.'
-const leaderShort = leader.slice(0, 105) + '...'
-const material = 'The Life of Material Dashboard'
-const small = 'Header with small subtitle'
+
 
 export default {
-  data: () => ({
-    typography: {
-      'heading-1': ['Header 1', material, 'h1'],
-      'heading-2': ['Header 2', material, 'h2'],
-      'heading-3': ['Header 3', material, 'h3'],
-      'heading-4': ['Header 4', material, 'h4'],
-      'heading-5': ['Header 5', material, 'h5'],
-      'heading-6 text-uppercase': ['Header 6', material, 'h6'],
-      '': ['Paragraph', leader, 'p'],
-      'quote': ['Quote', leader, 'blockquote'],
-      'text--disabled': ['Muted Text', leaderShort, 'p'],
-      'text-primary': ['Primary Text', leaderShort, 'p'],
-      'text-info': ['Info Text', leaderShort, 'p'],
-      'text-success': ['Success Text', leaderShort, 'p'],
-      'text-warning': ['Warning Text', leaderShort, 'p'],
-      'text-danger': ['Danger Text', leaderShort, 'p'],
-      'small': ['Small Tag', small, 'h2']
+  data() {
+    return {
+      financialData: []
     }
-  })
+  },
+  created() {
+
+  },
+  methods: {
+    //退租
+    eviction(){
+
+    }
+  }
 }
 </script>
 

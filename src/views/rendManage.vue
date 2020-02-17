@@ -13,59 +13,53 @@
           color="white"
         >
           <v-card-text>
-            <el-table :data="testdata">
+            <el-table :data="rendData">
               <el-table-column
-                label="合同id"
-                prop="id"
+                label="合同编号"
+                prop="rendId"
                 width="120"
               />
               <el-table-column
                 label="地址"
-                prop="name"
+                prop="rend_address"
                 width="170"/>
               <el-table-column
                 label="出租人"
-                prop="idcard"
+                prop="rend_man"
                 width="140"/>
               <el-table-column
-                label="租赁人"
-                prop="worktime"
-                width="140"/>
-              <el-table-column
-                prop="picture"
+                prop="rend_start"
                 label="合同开始时间">
-                <template slot-scope="scope">
-                  <el-button
-                    type="primary"
-                    size="small"
-                    @click="toImg(scope.row)">查看</el-button>
-                </template>
               </el-table-column>
               <el-table-column
-                label="合同结束时间"
-                prop="lastlogin"
-                width="180"/>
+                      label="文件">
+                <template slot-scope="scope">
+                  <el-button
+                          type="primary"
+                          size="small"
+                          @click="seeFile(scope.row)">
+                    查看
+                  </el-button>
+                </template>
+              </el-table-column>
               <el-table-column
                 label="是否要支付违约金"
-                min-width="180">
+                min-width="180" prop="paymoney">
                 <template slot-scope="scope">
                   <el-button
-                    v-if="scope.row.reviewstatus === '0'"
+                    v-if="scope.row.paymoney === true"
                     size="small"
                     type="primary"
-                    @click="reviewTrend(scope.row, 2)">不通过</el-button>
+                    >
+                    是
+                  </el-button>
                   <el-button
-                    v-if="scope.row.reviewstatus === '0'"
+                    v-else
                     size="small"
                     type="primary"
-                    class="btn"
-                    @click="reviewTrend(scope.row, 1)">通过</el-button>
+                    >否</el-button>
                 </template>
               </el-table-column>
-              <el-table-column
-                label="跟进人"
-                prop="lastlogin"
-                width="180"/>
             </el-table>
           </v-card-text>
         </material-card>
@@ -75,65 +69,25 @@
 </template>
 
 <script>
+  import {getAllRend} from '../api/api'
 export default {
-  data: () => ({
-    headers: [
-      {
-        sortable: false,
-        text: 'Name',
-        value: 'name'
-      },
-      {
-        sortable: false,
-        text: 'Country',
-        value: 'country'
-      },
-      {
-        sortable: false,
-        text: 'City',
-        value: 'city'
-      },
-      {
-        sortable: false,
-        text: 'Salary',
-        value: 'salary',
-        align: 'right'
-      }
-    ],
-    items: [
-      {
-        name: 'Dakota Rice',
-        country: 'Niger',
-        city: 'Oud-Tunrhout',
-        salary: '$35,738'
-      },
-      {
-        name: 'Minerva Hooper',
-        country: 'Curaçao',
-        city: 'Sinaai-Waas',
-        salary: '$23,738'
-      }, {
-        name: 'Sage Rodriguez',
-        country: 'Netherlands',
-        city: 'Overland Park',
-        salary: '$56,142'
-      }, {
-        name: 'Philip Chanley',
-        country: 'Korea, South',
-        city: 'Gloucester',
-        salary: '$38,735'
-      }, {
-        name: 'Doris Greene',
-        country: 'Malawi',
-        city: 'Feldkirchen in Kārnten',
-        salary: '$63,542'
-      }, {
-        name: 'Mason Porter',
-        country: 'Chile',
-        city: 'Gloucester',
-        salary: '$78,615'
-      }
-    ]
-  })
+  data() {
+    return {
+      rendData: []
+    }
+  },
+  created() {
+    this.rendManage()
+  },
+  methods: {
+    //查看所有租赁信息
+    rendManage(){
+      getAllRend().then(res => {
+        if(res.data.code === 0){
+          this.rendData = res.data.data
+        }
+      })
+    }
+  }
 }
 </script>
