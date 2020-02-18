@@ -1,8 +1,6 @@
 
 import Vue from 'vue'
 import './components'
-
-// Plugins
 import './plugins'
 import { sync } from 'vuex-router-sync'
 import ElementUI from 'element-ui'

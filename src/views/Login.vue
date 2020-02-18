@@ -80,6 +80,7 @@ export default {
             admin_name: this.ruleForm2.admin_name,
             admin_password: this.ruleForm2.admin_password
           }
+
           requestLogin(loginParams).then(res => {
             this.logining = false
             if (res.data.code !== 0) {
@@ -94,7 +95,7 @@ export default {
                 path: '/roomManage'
               })
               window.document.cookie = "login" + "=" +new Date().getTime() + ";path=/;expires=" + 'Fri, 31 Dec 9999 23:59:59 GMT'
-            }
+           }
           })
         } else {
           return false
