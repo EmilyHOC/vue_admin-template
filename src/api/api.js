@@ -91,3 +91,11 @@ export const modifyCustom = params => {
 export const getAllRend = params =>{
     return axios.get(`${base2}/api/rend/getAllRend`, {params:params})
 }
+
+/*
+* 设备管理
+* */
+//获取所有设备
+export const getAllDevice = params => {
+    return axios.get(`${base2}/api/device/getAllDevice`, {params:params})
+}

@@ -13,7 +13,7 @@
           color="white"
         >
           <v-card-text>
-            <el-table :data="rendData">
+            <el-table :data="rendData" class="el-coloumn">
               <el-table-column
                 label="合同编号"
                 prop="rendId"

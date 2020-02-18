@@ -12,65 +12,49 @@
           color="white"
         >
           <v-card-text>
-            <el-table :data="testdata">
+            <el-table :data="deviceData" class="el-coloumn">
               <el-table-column
                 label="编号"
-                prop="id"
+                prop="device_Id"
                 width="120"
               />
               <el-table-column
                 label="地址"
-                prop="name"
+                prop="device_address"
                 width="170"/>
               <el-table-column
-                label="使用设备"
-                prop="idcard"
+                label="设备名称"
+                prop="device_kind"
                 width="140"/>
               <el-table-column
                 label="使用数量"
-                prop="worktime"
+                prop="device_num"
                 width="140"/>
               <el-table-column
-                prop="picture"
+                prop="device_rend"
                 label="租或买">
-                <template slot-scope="scope">
-                  <el-button
-                    type="primary"
-                    size="small"
-                    @click="toImg(scope.row)">查看</el-button>
-                </template>
               </el-table-column>
               <el-table-column
                 label="设备单价"
-                prop="lastlogin"
+                prop="device_price"
                 width="180"/>
               <el-table-column
                 label="是否归还"
-                prop="lastlogin"
+                prop="device_return"
                 width="180"/>
               <el-table-column
                 label="开始使用时间"
-                prop="lastlogin"
+                prop="device_start"
                 width="180"/>
               <el-table-column
                 label="归还时间"
-                prop="lastlogin"
+                prop="device_returntime"
                 width="180"/>
               <el-table-column
                 label="支付费用"
-                min-width="180">
+                min-width="180" prop="device_pay">
                 <template slot-scope="scope">
-                  <el-button
-                    v-if="scope.row.reviewstatus === '0'"
-                    size="small"
-                    type="primary"
-                    @click="reviewTrend(scope.row, 2)">不通过</el-button>
-                  <el-button
-                    v-if="scope.row.reviewstatus === '0'"
-                    size="small"
-                    type="primary"
-                    class="btn"
-                    @click="reviewTrend(scope.row, 1)">通过</el-button>
+
                 </template>
               </el-table-column>
             </el-table>
@@ -82,7 +66,25 @@
 </template>
 
 <script>
+  import {getAllDevice} from '../api/api'
 export default {
-  //
+  data(){
+    return {
+      deviceData: []
+    }
+  },
+  created() {
+    this.getAllDevice()
+  },
+  methods: {
+    //获取所有租借设备列表
+    getAllDevice(){
+      getAllDevice().then(res => {
+        if(res.data.code === 0){
+          this.deviceData = res.data.data
+        }
+      })
+    }
+  }
 }
 </script>

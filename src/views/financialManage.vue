@@ -12,7 +12,7 @@
           color="white"
         >
           <v-card-text>
-            <el-table :data="financialData">
+            <el-table :data="financialData" class="el-coloumn">
               <el-table-column
                 label="房屋编号"
                 prop="financial_roomId"
