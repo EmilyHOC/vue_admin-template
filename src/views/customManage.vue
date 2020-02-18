@@ -73,8 +73,8 @@
                                         label="操作"
                                         min-width="180">
                                     <template slot-scope="scope">
-                                        <el-button @click="handleModifyCustom">修改</el-button>
-                                        <el-button @click="handleDeleteCustom(scope.row.customId)">删除</el-button>
+                                        <el-button @click="handleModifyCustom(scope.row)" type="warning" size="small">修改</el-button>
+                                        <el-button @click="handleDeleteCustom(scope.row.customId)" type="danger" size="small">删除</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -135,13 +135,13 @@
             <el-form :model="customModifyForm" label-width="80px" :rules="customModifyFormRules"
                      ref="custommodifyruleForm">
                 <el-form-item label="手机号" prop="custom_phone">
-                    <el-input v-model="customEditForm.custom_phone" :clearable="true" max="170"></el-input>
+                    <el-input v-model="customModifyForm.custom_phone" :clearable="true" max="170"></el-input>
                 </el-form-item>
                 <el-form-item label="租房信息" prop="custom_rendInfo">
-                    <el-input v-model="customEditForm.custom_rendInfo" :clearable="true" max="170"></el-input>
+                    <el-input v-model="customModifyForm.custom_rendInfo" :clearable="true" max="170"></el-input>
                 </el-form-item>
                 <el-form-item label="是否签订租房需求" prop="custom_sign">
-                    <el-radio-group v-model="customEditForm.custom_sign">
+                    <el-radio-group v-model="customModifyForm.custom_sign">
                         <el-radio class="radio" label="true">是</el-radio>
                         <el-radio class="radio" label="false">否</el-radio>
                     </el-radio-group>
@@ -260,10 +260,12 @@
             //新增客户弹窗
             addNewCustom() {
                 this.newCustomDialog = !this.newCustomDialog
+
             },
             //修改客户弹窗
-            handleModifyCustom() {
+            handleModifyCustom(custom) {
                 this.modifyCustomDialog = !this.modifyCustomDialog
+                this.customEditForm =  Object.assign({}, custom)
             },
             //取消新增客户
             resestCustom(formName) {
