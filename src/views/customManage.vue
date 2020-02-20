@@ -142,14 +142,14 @@
                 </el-form-item>
                 <el-form-item label="是否签订租房需求" prop="custom_sign">
                     <el-radio-group v-model="customModifyForm.custom_sign">
-                        <el-radio class="radio" label="true">是</el-radio>
-                        <el-radio class="radio" label="false">否</el-radio>
+                        <el-radio class="radio" :label="true" v-model="customModifyForm.custom_sign">是</el-radio>
+                        <el-radio class="radio" :label="false" v-model="customModifyForm.custom_sign">否</el-radio>
                     </el-radio-group>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="modifyResetCustom('custommodifyruleForm')">取消</el-button>
-                <el-button type="primary" @click.native="modifysubmitRoom('custommodifyruleForm')"
+                <el-button type="primary" @click.native="modifysubmitCustom('custommodifyruleForm')"
                            :loading="submitModifyCustomSuccess">提交
                 </el-button>
             </div>
@@ -265,7 +265,7 @@
             //修改客户弹窗
             handleModifyCustom(custom) {
                 this.modifyCustomDialog = !this.modifyCustomDialog
-                this.customEditForm =  Object.assign({}, custom)
+                this.customModifyForm =  Object.assign({}, custom)
             },
             //取消新增客户
             resestCustom(formName) {
@@ -300,7 +300,7 @@
                 this.$refs[formName].resetFields();
             },
             //修改客户信息
-            modifysubmitRoom() {
+            modifysubmitCustom() {
                 let params = {
                     modifyInfo: this.customModifyForm
                 }
@@ -311,6 +311,7 @@
                             message: '修改成功',
                             type: 'success'
                         })
+                        this.customModifyForm = {}
                         this.getAllCustom()
                     }
                 })
