@@ -99,3 +99,11 @@ export const getAllRend = params =>{
 export const getAllDevice = params => {
     return axios.get(`${base2}/api/device/getAllDevice`, {params:params})
 }
+//新增设备
+export const newDevice = params => {
+    return axios.post(`${base2}/api/device/newDevice`, params)
+}
+//归还设备
+export const returnDevice = params => {
+
+}

@@ -196,6 +196,7 @@
                     custom_sex: [{required: true, message: '请选择客户性别', trigger: 'blur'}],
                     custom_phone: [{required: true, message: '请输入手机号', trigger: 'blur'}],
                     custom_sign: [{required: true, message: '请选择客户是否签订租房合同', trigger: 'blur'}],
+                    custom_rendInfo: [{required: true, message: '请填写租房信息', trigger: 'blur'}]
                 },
                 //修改客户信息
                 customModifyForm: {

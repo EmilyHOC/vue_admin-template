@@ -39,6 +39,10 @@
 .el-table{
   text-align: center;
 }
+.inputheight input{
+  height: 44px;
+  width: 300px;
+}
 
 .el-textarea .el-textarea__inner { // 然后找到对应的类名，在这里将拉伸去掉即可
   resize: none;
