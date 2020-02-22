@@ -107,3 +107,10 @@ export const newDevice = params => {
 export const returnDevice = params => {
 
 }
+//搜索
+export const searchDevice = params => {
+    return axios.post(`${base2}/api/device/searchDevice`, params)
+}
+ export const changeDeviceStatus = params =>{
+     return axios.put(`${base2}/api/device/changeDeviceStatus`, params)
+ }

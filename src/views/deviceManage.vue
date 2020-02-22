@@ -15,8 +15,8 @@
           </el-button>
         </div>
         <div>
-          <el-input  :clearable="true" placeholder="请输入设备订单号" class="inputheight">
-            <i slot="suffix" class="el-input__icon el-icon-search"></i>
+          <el-input  :clearable="true" placeholder="请输入设备订单号" class="inputheight" v-model="deviceInputVal">
+            <i slot="suffix" class="el-input__icon el-icon-search" @click="searchDeVal"></i>
           </el-input>
         </div>
         <v-flex xs12>
@@ -68,7 +68,7 @@
                         prop="device_start"
                         width="130"/>
                 <el-table-column
-                        label="归还时间"
+                        label="结束时间"
                         prop="device_returntime"
                         width="130">
 
@@ -84,16 +84,17 @@
                         label="状态"
                         prop="device_status">
                   <template slot-scope="scope">
-                    <el-button v-if="scope.row.device_status === true" type="primary" size="small">已支付</el-button>
-                    <el-button type="danger" size="small" v-else>未支付</el-button>
+                    <el-button v-if="scope.row.device_status === '1'" type="primary" size="small">已支付</el-button>
+                    <el-button type="danger" size="small" v-if="scope.row.device_status === '0'">未支付</el-button>
+                    <el-button type="primary" size="small" v-if="scope.row.device_status === '2'">已归还</el-button>
                   </template>
                 </el-table-column>
                 <el-table-column
                         label="操作" min-width="180"
                 >
                   <template slot-scope="scope">
-                    <el-button type="primary" size="small" v-if="!scope.row.device_status" @click="paymoney">付款</el-button>
-                    <el-button type="primary" size="small" v-if="!scope.row.device_status" @click="returnTo(scope.row.device_Id)">归还</el-button>
+                    <el-button type="primary" size="small" v-if="scope.row.device_status==='0'" @click="paymoney(scope.row.device_Id,'1')">付款</el-button>
+                    <el-button type="primary" size="small" v-if="scope.row.device_status==='0'" @click="returnTo(scope.row.device_Id,'2')">归还</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -140,7 +141,7 @@
 </template>
 
 <script>
-  import {getAllDevice,newDevice} from '../api/api'
+  import {getAllDevice,newDevice,searchDevice,changeDeviceStatus} from '../api/api'
 export default {
   data(){
     return {
@@ -151,7 +152,8 @@ export default {
         device_kind: '', //设备名称
         device_price: '',//单价
         device_num: '',
-        device_rend: '' //租或买
+        device_rend: '', //租或买
+        device_status: 0
       },
       deviceEditFormRules: {
         device_address: [{required: true, message: '请输入订单地址', trigger: 'blur'}], //地址
@@ -161,7 +163,8 @@ export default {
         device_rend: [{required: true, message: '请选择租或者买', trigger: 'blur'}] //租或买
       },
       newDeviceDialog: false,
-      submitCustomSuccess: false
+      submitCustomSuccess: false,
+      deviceInputVal: ''
     }
   },
   created() {
@@ -184,7 +187,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let time = new Date()
-          let create_time = `${time.getFullYear()}-${time.getMonth()+1}-${time.getDate()}}`
+          let create_time = `${time.getFullYear()}-${time.getMonth()+1}-${time.getDate()}`
           Object.assign(this.deviceEditForm, {device_start: create_time})
           let params = {
             newdevice: this.deviceEditForm
@@ -208,15 +211,69 @@ export default {
       this.newDeviceDialog = false
       this.$refs[formName].resetFields();
     },
-    //归还设备
-    returnTo(deviceid){
-      let time = new Date()
-      let return_time = `${time.getFullYear()}-${time.getMonth()+1}-${time.getDate()}}`
+    //付款
+    paymoney(id, status){
+      this.$confirm('请确认客户已付款！', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let time = new Date()
+        let create_time = `${time.getFullYear()}-${time.getMonth()+1}-${time.getDate()}`
+        let params = {
+          deviceId: id,
+          status: status,
+          returntime: create_time
+        }
+        changeDeviceStatus(params).then(res=> {
+          if(res.data.code===0){
+            this.$message({
+              message:'付款成功',
+              type: 'success'
+            })
+            this.getAllDevice()
+          }
+        })
+       })
 
     },
-    //付款
-    paymoney(){
+    //归还
+    returnTo(id, status){
+      this.$confirm('请确认客户已归还设备哦！', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(()=>{
+        let time = new Date()
+        let create_time = `${time.getFullYear()}-${time.getMonth()+1}-${time.getDate()}`
+        let params = {
+          deviceId: id,
+          status: status,
+          returntime: create_time
+        }
+        changeDeviceStatus(params).then(res=> {
+          if(res.data.code===0){
+            this.$message({
+              message:'归还成功',
+              type: 'success'
+            })
+            this.getAllDevice()
+          }
+        })
+        })
 
+    },
+    //搜索
+    searchDeVal(){
+      let params = {
+        deviceOrder: this.deviceInputVal
+      }
+      searchDevice(params).then(res =>{
+        console.log(res)
+        if(res.data.code === 0 ){
+          this.deviceData = res.data.data
+        }
+      })
     }
   }
 }
