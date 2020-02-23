@@ -91,7 +91,18 @@ export const modifyCustom = params => {
 export const getAllRend = params =>{
     return axios.get(`${base2}/api/rend/getAllRend`, {params:params})
 }
-
+//搜索租赁合同
+export const searchRendInfo = params =>{
+    return axios.post(`${base2}/api/rend/searchRendInfo`, params)
+}
+//退租
+export const deleteRend = params =>{
+    return axios.delete(`${base2}/api/rend/deleteRend`, {params: params})
+}
+//续租
+export const conRendInfo = params => {
+    return axios.put(`${base2}/api/rend/conRendInfo`, params)
+}
 /*
 * 设备管理
 * */
@@ -103,14 +114,19 @@ export const getAllDevice = params => {
 export const newDevice = params => {
     return axios.post(`${base2}/api/device/newDevice`, params)
 }
-//归还设备
-export const returnDevice = params => {
 
-}
 //搜索
 export const searchDevice = params => {
     return axios.post(`${base2}/api/device/searchDevice`, params)
 }
+//更改设备状态
  export const changeDeviceStatus = params =>{
      return axios.put(`${base2}/api/device/changeDeviceStatus`, params)
  }
+/*
+*财务管理*/
+//get全部
+export const getAllFina = params => {
+    return axios.get(`${base2}/api/financial/getAllFinancialList`, {params:params})
+
+}

@@ -48,9 +48,9 @@
                         min-width="180"
                         prop="findancial_powerprice"/>
                 <el-table-column
-                        label="付款方式"
-                        prop="findancial_pay"
-                        width="180"/>
+                        label="电费初始度数"
+                        min-width="180"
+                        prop="findancial_powermeter"/>
                 <el-table-column
                         label="操作"
                         min-width="180">
@@ -71,27 +71,16 @@
     </v-container>
     <!--结算水电费-->
     <el-dialog title="结算房租" :visible.sync="settlementOfRentDialog" class="showaddRoomDialog" @close="settlementOfRentDialog=false" width="40%">
-      <el-form  label-width="80px"  ref="ruleForm">
-        <el-form-item label="水费">
-          <el-input  max="170" aria-placeholder=""></el-input>
+      <el-form :model="payItem" label-width="80px"  ref="ruleForm" :rules="payItemRules" class="labelpay">
+        <el-form-item label="水费结算度数" prop="water">
+          <el-input  max="170" v-model="payItem.water"></el-input>
         </el-form-item>
-        <el-form-item label="电费" prop="room_usage">
-          <el-input>
-            <template slot="append">年</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="房租">
-          <el-input>
-            <template slot="append">平方米</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="总价" >
-          <el-input  :clearable="true">
-          </el-input>
+        <el-form-item label="电费结算度数" prop="power" >
+          <el-input v-model="payItem.power"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click.native="finacialSure" >确定</el-button>
+        <el-button type="primary" @click.native="finacialSure('ruleForm')">结算</el-button>
       </div>
     </el-dialog>
   </div>
@@ -99,7 +88,7 @@
 </template>
 
 <script>
-
+import {getAllFina} from '../api/api'
 
 export default {
   data() {
@@ -107,22 +96,50 @@ export default {
       //结算金额数据
       financialData: [],
       settlementOfRentDialog: false,
-      payItem: {}
-
+      payItem: {
+        power:'',
+        water: ''
+      },
+      payItemRules:{
+        power: [{required: true, message: '请输入当前电表度数', trigger: 'blur'}],
+        water: [{required: true, message: '请输入当前水表度数度数', trigger: 'blur'}] //租或买
+      },
+      payList: {}
     }
   },
   created() {
-
+    this.getAllFina()
   },
   methods: {
-    //退租
+    //退租界面
     eviction(row){
       this.settlementOfRentDialog = !this.settlementOfRentDialog
-      this.payItem = row
+      this.payList = row
     },
     //确定
-    finacialSure(){
+    finacialSure(formName){
       this.settlementOfRentDialog = false
+      this.$refs[formName].validate((valid) => {
+        if(valid){
+          var watermoney = this.payList.findancial_waterprice*(this.payItem.water-this.payList.findancial_watermeter)
+          var powermoney = this.payList.findancial_powerprice*(this.payItem.power-this.payList.findancial_powermeter)
+          console.log(watermoney,powermoney)
+          this.settlementOfRentDialog = false
+          this.$confirm( `水费应付: ${watermoney},电费应付:${powermoney}`, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(()=>{})
+        }
+      })
+    },
+    //财务管理清单
+    getAllFina(){
+      getAllFina().then(res=> {
+        if(res.data.code === 0){
+          this.financialData = res.data.data
+        }
+      })
     }
   }
 }

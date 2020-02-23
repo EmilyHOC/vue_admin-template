@@ -30,19 +30,6 @@
         layout
         py-2
       >
-        <v-text-field
-          class="mr-4 purple-input"
-          label="Search..."
-          hide-details
-          color="purple"
-        />
-        <router-link
-          v-ripple
-          class="toolbar-items"
-          to="/"
-        >
-          <v-icon color="tertiary">mdi-view-dashboard</v-icon>
-        </router-link>
         <v-menu
           bottom
           left
@@ -78,13 +65,36 @@
             </v-list>
           </v-card>
         </v-menu>
-        <router-link
-          v-ripple
-          class="toolbar-items"
-          to="/user-profile"
-        >
-          <v-icon color="tertiary">mdi-account</v-icon>
-        </router-link>
+        <v-menu
+                bottom
+                left
+                content-class="dropdown-menu"
+                offset-y
+                transition="slide-y-transition">
+          <router-link
+                  v-ripple
+                  slot="activator"
+                  class="toolbar-items"
+                  to="/notifications"
+          >
+              <template slot="badge">
+                {{ notifications.length }}
+              </template>
+              <v-icon color="tertiary">mdi-account</v-icon>
+          </router-link>
+          <v-card>
+            <v-list dense>
+              <v-list-tile
+                      v-for="notification in loginInfo"
+                      :key="notification"
+              >
+                <v-list-tile-title
+                        v-text="notification" @click="handleClick"
+                />
+              </v-list-tile>
+            </v-list>
+          </v-card>
+        </v-menu>
       </v-flex>
     </v-toolbar-items>
   </v-toolbar>
@@ -92,48 +102,30 @@
 
 <script>
 
-import {
-  mapMutations
-} from 'vuex'
 
 export default {
-  data: () => ({
-    notifications: [
-      'Mike, John responded to your email',
-      'You have 5 new tasks',
-      'You\'re now a friend with Andrew',
-      'Another Notification',
-      'Another One'
-    ],
-    title: null,
-    responsive: false
-  }),
+  data(){
+    return {
+      notifications: [
+        '请各位管理员认真管理公寓的设施',
+        '不可以滥用职权'
+      ],
+      title: null,
+      responsive: false,
+      loginInfo: ['登出']
+    }
+  },
 
   watch: {
     '$route' (val) {
       this.title = val.name
     }
   },
-
-  mounted () {
-    this.onResponsiveInverted()
-    window.addEventListener('resize', this.onResponsiveInverted)
-  },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.onResponsiveInverted)
-  },
-
   methods: {
-    ...mapMutations('app', ['setDrawer', 'toggleDrawer']),
-    onClickBtn () {
-      this.setDrawer(!this.$store.state.app.drawer)
-    },
-    onResponsiveInverted () {
-      if (window.innerWidth < 991) {
-        this.responsive = true
-      } else {
-        this.responsive = false
-      }
+    handleClick(){
+      this.$router.push({
+        path: '/login'
+      })
     }
   }
 }

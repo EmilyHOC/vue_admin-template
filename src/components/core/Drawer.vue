@@ -76,27 +76,27 @@ export default {
         text: '房源管理'
       },
       {
-        to: '/user-profile',
+        to: '/deviceManage',
         icon: 'mdi-airplay',
         text: '设施管理'
       },
       {
-        to: '/table-list',
+        to: '/rendManage',
         icon: 'mdi-clipboard-outline',
         text: '租赁管理'
       },
       {
-        to: '/typography',
+        to: '/financialManage',
         icon: 'mdi-format-font',
         text: '财务管理'
       },
       {
-        to: '/icons',
+        to: '/customManage',
         icon: 'mdi-chart-bubble',
         text: '客户管理'
       },
       {
-        to: '/maps',
+        to: '/sysManage',
         icon: 'mdi-account',
         text: '系统管理'
       }

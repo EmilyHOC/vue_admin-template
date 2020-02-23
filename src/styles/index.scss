@@ -47,3 +47,9 @@
 .el-textarea .el-textarea__inner { // 然后找到对应的类名，在这里将拉伸去掉即可
   resize: none;
 }
+.labelpay .el-form-item__label{
+  width: 150px !important;
+}
+.labelpay .el-input__inner{
+  width: 300px !important;
+}
