@@ -1,10 +1,8 @@
 import axios from 'axios';
 
-
-let base = 'http://39.98.207.235:8080/pine2'
 // eslint-disable-next-line no-unused-vars
 // http://localhost/8082
-let base2 = '/api'
+let base2 = 'http://localhost:8082'
 /*
 * 登陆
 * */
